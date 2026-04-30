@@ -1,20 +1,35 @@
+<div align="center">
+
 # Vault Calculator
+
+### A native Android calculator with a hidden encrypted file vault
 
 ![Android](https://img.shields.io/badge/Android-native-3DDC84?logo=android&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-17-007396?logo=openjdk&logoColor=white)
-![Encryption](https://img.shields.io/badge/Encryption-AES--GCM-blue)
-![Storage](https://img.shields.io/badge/Storage-local--only-success)
-![Status](https://img.shields.io/badge/status-MVP%20complete-brightgreen)
+![Android SDK](https://img.shields.io/badge/Android%20SDK-36-34A853?logo=android&logoColor=white)
+![Encryption](https://img.shields.io/badge/Encryption-AES--GCM-2563EB)
+![Storage](https://img.shields.io/badge/Storage-local--only-059669)
+![Status](https://img.shields.io/badge/Status-MVP%20complete-16A34A)
 
-A native Android calculator that doubles as a private, local-only encrypted file vault.
+Vault Calculator looks like a clean everyday calculator, but a PIN unlock flow opens a private file vault. Files selected by the user are encrypted locally with AES-GCM and stored inside app-private storage using an Android Keystore-backed key.
 
-Vault Calculator behaves like a clean everyday calculator. Behind a PIN unlock flow, it opens a user-controlled vault where selected files are encrypted into app-private storage using AES-GCM and an Android Keystore-backed key.
+[Features](#features) | [Screenshots](#screenshots) | [Security Model](#security-model) | [Run Locally](#run-locally) | [Roadmap](#roadmap)
 
-> Built as a practical Android privacy utility and portfolio project.
+</div>
 
-## Why It Stands Out
+## Recruiter Snapshot
 
-- Real calculator UI with basic arithmetic
+| Area | What this project demonstrates |
+| --- | --- |
+| Android development | Native Java Android app, AndroidX Activity APIs, programmatic UI, Activity Result API |
+| Security awareness | AES-GCM encryption, Android Keystore, salted PIN hashing, local-only storage |
+| Product thinking | Disguised calculator workflow, first-run setup, restore/delete flows, privacy-first positioning |
+| Platform fit | Uses the Android system file picker instead of broad storage permissions |
+| Portfolio readiness | Complete README, screenshots, docs, Play Store notes, privacy policy template |
+
+## Features
+
+- Clean calculator interface with basic arithmetic
 - Hidden vault unlock by entering the PIN and pressing `=`
 - First-run PIN setup and PIN change flow
 - Multi-file import through Android's system file picker
@@ -28,27 +43,74 @@ Vault Calculator behaves like a clean everyday calculator. Behind a PIN unlock f
 
 ## Screenshots
 
-<p align="center">
-  <img src="docs/screenshots/calculator-home.jpeg" alt="Calculator home screen" width="180">
-  <img src="docs/screenshots/calculator-pin-entry.jpeg" alt="Calculator PIN unlock entry" width="180">
-  <img src="docs/screenshots/vault-empty.jpeg" alt="Private vault empty state" width="180">
-</p>
+<table>
+  <tr>
+    <td align="center"><strong>Calculator Home</strong></td>
+    <td align="center"><strong>PIN Unlock Entry</strong></td>
+    <td align="center"><strong>Private Vault</strong></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/calculator-home.jpeg" alt="Calculator home screen" width="220"></td>
+    <td><img src="docs/screenshots/calculator-pin-entry.jpeg" alt="Calculator PIN unlock entry" width="220"></td>
+    <td><img src="docs/screenshots/vault-empty.jpeg" alt="Private vault empty state" width="220"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Import Confirmation</strong></td>
+    <td align="center"><strong>Change PIN</strong></td>
+    <td align="center"><strong>Local-first Vault</strong></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/vault-import-dialog.jpeg" alt="Import to vault confirmation dialog" width="220"></td>
+    <td><img src="docs/screenshots/vault-pin-dialog.jpeg" alt="Change vault PIN dialog" width="220"></td>
+    <td align="center">No cloud sync<br>No account login<br>No analytics<br>No ads</td>
+  </tr>
+</table>
 
-<p align="center">
-  <img src="docs/screenshots/vault-import-dialog.jpeg" alt="Import to vault confirmation dialog" width="180">
-  <img src="docs/screenshots/vault-pin-dialog.jpeg" alt="Change vault PIN dialog" width="180">
-</p>
+## Security Model
+
+Vault Calculator is intentionally designed as a local-first privacy utility.
+
+| Layer | Implementation |
+| --- | --- |
+| File selection | Android system file picker, so users explicitly choose files |
+| File encryption | AES/GCM/NoPadding with a fresh IV per encrypted file |
+| Key storage | Android Keystore-backed AES key |
+| PIN storage | Salted SHA-256 hash, not plaintext |
+| Vault location | App-private internal storage |
+| Data sharing | No server, no account, no analytics, no ads |
+
+## How The Vault Works
+
+```text
+User selects files
+        |
+        v
+Android system file picker grants access
+        |
+        v
+App encrypts file stream with AES-GCM
+        |
+        v
+Encrypted copy is written to app-private storage
+        |
+        v
+Vault metadata is saved locally
+        |
+        v
+User can restore or delete encrypted files
+```
+
+The app attempts to remove the original selected file when Android grants that permission. When Android or the document provider does not allow deletion, the app tells the user that manual deletion may be needed.
 
 ## Tech Stack
 
-- Android SDK 36
-- Java 17
-- Gradle Wrapper 9.4.1
-- Android Gradle Plugin 9.2.0
-- AndroidX Activity
-- AndroidX Core
-- Android Keystore
-- AES/GCM/NoPadding
+| Category | Tools |
+| --- | --- |
+| Language | Java 17 |
+| Platform | Android SDK 36 |
+| Build | Gradle Wrapper 9.4.1, Android Gradle Plugin 9.2.0 |
+| Libraries | AndroidX Activity, AndroidX Core |
+| Security APIs | Android Keystore, AES/GCM/NoPadding |
 
 ## Project Structure
 
@@ -62,23 +124,13 @@ Vault Calculator behaves like a clean everyday calculator. Behind a PIN unlock f
 |   |-- GITHUB_SHOWCASE_GUIDE.md
 |   |-- PLAY_STORE_AND_MONETIZATION.md
 |   |-- PRIVACY_POLICY_TEMPLATE.md
-|   `-- RUN_ON_PC_AND_GITHUB.md
+|   |-- RUN_ON_PC_AND_GITHUB.md
+|   `-- screenshots/
 |-- gradle/wrapper/
 |-- build.gradle.kts
 |-- settings.gradle.kts
 `-- README.md
 ```
-
-## How The Vault Works
-
-1. The user chooses files through Android's system file picker.
-2. The app streams each selected file through AES-GCM encryption.
-3. Encrypted files are stored in the app-private directory.
-4. Metadata is stored locally so the vault can list, restore, or delete files.
-5. The vault key is generated and protected by Android Keystore.
-6. The vault PIN is stored as a salted hash, not as plain text.
-
-Vault contents stay on the device. Nothing is uploaded to a server.
 
 ## Run Locally
 
@@ -127,7 +179,7 @@ This version is intentionally local-first:
 
 If monetization, crash reporting, analytics, or cloud backup is added later, the privacy policy and Play Console Data safety declarations must be updated before release.
 
-## Roadmap Ideas
+## Roadmap
 
 - Add a short demo GIF
 - Add biometric unlock as an optional convenience layer
@@ -144,7 +196,7 @@ If monetization, crash reporting, analytics, or cloud backup is added later, the
 
 ## Status
 
-MVP complete and ready for GitHub showcase. Before a production release, capture real screenshots, review Play Store policy requirements, and test on multiple Android versions.
+MVP complete and ready for GitHub showcase. Before a production release, capture a demo GIF, review Play Store policy requirements, and test on multiple Android versions.
 
 ## Disclaimer
 
