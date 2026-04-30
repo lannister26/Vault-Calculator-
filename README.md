@@ -1,42 +1,49 @@
 # Vault Calculator
 
-A native Android calculator with a private, local-only encrypted file vault.
+![Android](https://img.shields.io/badge/Android-native-3DDC84?logo=android&logoColor=white)
+![Java](https://img.shields.io/badge/Java-17-007396?logo=openjdk&logoColor=white)
+![Encryption](https://img.shields.io/badge/Encryption-AES--GCM-blue)
+![Storage](https://img.shields.io/badge/Storage-local--only-success)
+![Status](https://img.shields.io/badge/status-MVP%20complete-brightgreen)
 
-Vault Calculator looks and behaves like a clean everyday calculator. Behind a PIN unlock flow, it provides a user-controlled vault where selected files are encrypted into app-private storage using AES-GCM with a key stored in the Android Keystore.
+A native Android calculator that doubles as a private, local-only encrypted file vault.
+
+Vault Calculator behaves like a clean everyday calculator. Behind a PIN unlock flow, it opens a user-controlled vault where selected files are encrypted into app-private storage using AES-GCM and an Android Keystore-backed key.
 
 > Built as a practical Android privacy utility and portfolio project.
 
-## Highlights
+## Why It Stands Out
 
-- Native Android app written in Java
-- Calculator interface with basic arithmetic
+- Real calculator UI with basic arithmetic
 - Hidden vault unlock by entering the PIN and pressing `=`
 - First-run PIN setup and PIN change flow
 - Multi-file import through Android's system file picker
-- AES-GCM file encryption
-- Android Keystore-backed encryption key
+- AES-GCM file encryption with per-file IVs
+- Android Keystore-backed vault key
 - App-private local storage
 - Restore and delete vault files
 - No server, account system, analytics, ads, or broad storage permission
-- Modern Android back handling with `OnBackPressedDispatcher`
+- Modern AndroidX back handling with `OnBackPressedDispatcher`
 - Modern activity result handling with `ActivityResultLauncher`
 
 ## Screenshots
 
-Add screenshots to `docs/screenshots/` after running the app on an emulator or phone.
+Screenshots are intentionally kept out until they are captured from a real emulator or device build.
 
-Suggested images:
+Recommended files:
 
-- `calculator.png`
-- `pin-setup.png`
-- `vault-empty.png`
-- `vault-files.png`
+```text
+docs/screenshots/calculator.png
+docs/screenshots/pin-setup.png
+docs/screenshots/vault-empty.png
+docs/screenshots/vault-files.png
+```
 
-Then update this section:
+After adding screenshots, place this in the section:
 
 ```md
-![Calculator](docs/screenshots/calculator.png)
-![Private vault](docs/screenshots/vault-files.png)
+![Calculator screen](docs/screenshots/calculator.png)
+![Encrypted file vault](docs/screenshots/vault-files.png)
 ```
 
 ## Tech Stack
@@ -54,32 +61,38 @@ Then update this section:
 
 ```text
 .
-├── app/
-│   └── src/main/
-│       ├── java/com/calcvault/privatefiles/MainActivity.java
-│       └── res/
-├── docs/
-│   ├── PLAY_STORE_AND_MONETIZATION.md
-│   ├── PRIVACY_POLICY_TEMPLATE.md
-│   └── RUN_ON_PC_AND_GITHUB.md
-├── gradle/wrapper/
-├── build.gradle.kts
-├── settings.gradle.kts
-└── README.md
+|-- app/
+|   `-- src/main/
+|       |-- java/com/calcvault/privatefiles/MainActivity.java
+|       `-- res/
+|-- docs/
+|   |-- GITHUB_SHOWCASE_GUIDE.md
+|   |-- PLAY_STORE_AND_MONETIZATION.md
+|   |-- PRIVACY_POLICY_TEMPLATE.md
+|   `-- RUN_ON_PC_AND_GITHUB.md
+|-- gradle/wrapper/
+|-- build.gradle.kts
+|-- settings.gradle.kts
+`-- README.md
 ```
 
-## How It Works
+## How The Vault Works
 
-The app uses Android's system file picker, so the user explicitly chooses the files they want to import. Imported files are encrypted and written into app-private storage. The app then attempts to delete the original selected file when Android grants that permission.
+1. The user chooses files through Android's system file picker.
+2. The app streams each selected file through AES-GCM encryption.
+3. Encrypted files are stored in the app-private directory.
+4. Metadata is stored locally so the vault can list, restore, or delete files.
+5. The vault key is generated and protected by Android Keystore.
+6. The vault PIN is stored as a salted hash, not as plain text.
 
-The vault PIN is stored as a salted hash. The encrypted file key is generated and protected by Android Keystore. Vault contents stay on the device and are not uploaded anywhere.
+Vault contents stay on the device. Nothing is uploaded to a server.
 
 ## Run Locally
 
 1. Install Android Studio.
 2. Open this project folder.
 3. Let Android Studio sync Gradle and install any missing SDK tools.
-4. Start an emulator or connect a real Android phone with USB debugging enabled.
+4. Start an emulator or connect an Android phone with USB debugging enabled.
 5. Run the `app` configuration.
 
 To open the vault:
@@ -102,6 +115,12 @@ The project writes generated Gradle build output outside OneDrive to avoid Windo
 C:\Users\harsh\AndroidBuilds\CalculatorVault
 ```
 
+To override the build output location:
+
+```powershell
+.\gradlew.bat :app:assembleDebug -PexternalBuildRoot=C:\AndroidBuilds\CalculatorVault
+```
+
 ## Privacy Position
 
 This version is intentionally local-first:
@@ -115,15 +134,39 @@ This version is intentionally local-first:
 
 If monetization, crash reporting, analytics, or cloud backup is added later, the privacy policy and Play Console Data safety declarations must be updated before release.
 
-## Publishing Notes
+## Suggested GitHub Topics
 
-Play Store and monetization guidance is included in:
+```text
+android
+java
+android-app
+privacy
+encryption
+calculator
+file-vault
+android-keystore
+aes-gcm
+portfolio-project
+```
 
-[docs/PLAY_STORE_AND_MONETIZATION.md](docs/PLAY_STORE_AND_MONETIZATION.md)
+## Roadmap Ideas
+
+- Add polished screenshots and a short demo GIF
+- Add biometric unlock as an optional convenience layer
+- Add export-all flow for trusted backup locations
+- Add instrumented tests for vault import, restore, and delete behavior
+- Add a release workflow for debug and signed builds
+
+## Documentation
+
+- [Run on PC and GitHub guide](docs/RUN_ON_PC_AND_GITHUB.md)
+- [Play Store and monetization notes](docs/PLAY_STORE_AND_MONETIZATION.md)
+- [Privacy policy template](docs/PRIVACY_POLICY_TEMPLATE.md)
+- [GitHub showcase checklist](docs/GITHUB_SHOWCASE_GUIDE.md)
 
 ## Status
 
-MVP complete and tested on Android emulator/real-device workflow.
+MVP complete and ready for GitHub showcase. Before a production release, capture real screenshots, review Play Store policy requirements, and test on multiple Android versions.
 
 ## Disclaimer
 
