@@ -28,23 +28,16 @@ Vault Calculator behaves like a clean everyday calculator. Behind a PIN unlock f
 
 ## Screenshots
 
-Screenshots are intentionally kept out until they are captured from a real emulator or device build.
+<p align="center">
+  <img src="docs/screenshots/calculator-home.jpeg" alt="Calculator home screen" width="180">
+  <img src="docs/screenshots/calculator-pin-entry.jpeg" alt="Calculator PIN unlock entry" width="180">
+  <img src="docs/screenshots/vault-empty.jpeg" alt="Private vault empty state" width="180">
+</p>
 
-Recommended files:
-
-```text
-docs/screenshots/calculator.png
-docs/screenshots/pin-setup.png
-docs/screenshots/vault-empty.png
-docs/screenshots/vault-files.png
-```
-
-After adding screenshots, place this in the section:
-
-```md
-![Calculator screen](docs/screenshots/calculator.png)
-![Encrypted file vault](docs/screenshots/vault-files.png)
-```
+<p align="center">
+  <img src="docs/screenshots/vault-import-dialog.jpeg" alt="Import to vault confirmation dialog" width="180">
+  <img src="docs/screenshots/vault-pin-dialog.jpeg" alt="Change vault PIN dialog" width="180">
+</p>
 
 ## Tech Stack
 
@@ -134,24 +127,9 @@ This version is intentionally local-first:
 
 If monetization, crash reporting, analytics, or cloud backup is added later, the privacy policy and Play Console Data safety declarations must be updated before release.
 
-## Suggested GitHub Topics
-
-```text
-android
-java
-android-app
-privacy
-encryption
-calculator
-file-vault
-android-keystore
-aes-gcm
-portfolio-project
-```
-
 ## Roadmap Ideas
 
-- Add polished screenshots and a short demo GIF
+- Add a short demo GIF
 - Add biometric unlock as an optional convenience layer
 - Add export-all flow for trusted backup locations
 - Add instrumented tests for vault import, restore, and delete behavior
